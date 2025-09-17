@@ -1,6 +1,8 @@
 package programmers.level1;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Programmers - 대충 만든 자판(Lv.1)
@@ -25,13 +27,13 @@ import java.util.Arrays;
  * - 만약, -1가 하나라도 존재하면 answer[i]는 -1
  *
  * [개선]
- * - 반복문 줄일 수 있음
+ * - solution은 target이 길어지면 계속 느려지므로 전처리 과정 후, 합산하도록 수정
  */
 public class KeymapSolution {
     public static void main(String[] args) {
         String[] keymap = {"AA","CC"};
         String[] targets = {"BB","CCA"};
-        System.out.println(Arrays.toString(solution(keymap, targets)));
+        System.out.println(Arrays.toString(solution2(keymap, targets)));
     }
 
     public static int[] solution(String[] keymap, String[] targets) {
@@ -61,6 +63,36 @@ public class KeymapSolution {
 
             }
 
+        }
+        return answer;
+    }
+
+
+    // keymap에 있는 key들의 최소로 누르는 값을 key, value로 저장
+    // targets의 문자열을 문자로 쪼개고 위에 Map에서 key값을 찾아 value로 누적
+    // 해당하는 key값이 없으면 -1로 answer[i]를 채우고 다음 문자로 넘어가서 위 과정 반복
+    public static int[] solution2(String[] keymap, String[] targets) {
+        int[] answer = new int[targets.length];
+
+        Map<Character, Integer> map  = new HashMap<>();
+
+        for(int i=0; i<keymap.length; i++) {
+            for(int j=0; j<keymap[i].length(); j++) {
+                char ch = keymap[i].charAt(j);
+                // 기존 값과 value가 작은거 유지
+                map.merge(ch,j,Math::min);
+            }
+        }
+
+        for(int i=0; i<targets.length; i++) {
+            for(int j=0; j<targets[i].length(); j++) {
+                char ch = targets[i].charAt(j);
+                if(!map.containsKey(ch)) {
+                    answer[i] = -1;
+                    break;
+                }
+                answer[i] += (map.get(ch)+1);
+            }
         }
         return answer;
     }
