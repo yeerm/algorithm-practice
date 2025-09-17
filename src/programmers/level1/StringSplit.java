@@ -18,12 +18,18 @@ package programmers.level1;
  * - 횟수 비교 후, 같다면 글자 수 만큼 split
  * - split 할때마다 카운트 (=answer)
  * - 다음 문자열이 존재하면 위 과정 반복
+ *
+ * [개선]
+ * - 반복문을 돌때마다 substring으로 시간 지체됨 ->
+ * 문자열을 자르지 않고 한개씩 확인 후 카운트만 하고 마지막에 남은 글자가 있으면 카운트 +1 하는 방식으로 변경
  */
 public class StringSplit {
     public static void main(String[] args) {
-        String x = "aaabbaccccabba";
+        String x = "abracadabra";
         System.out.println(solution(x));
     }
+
+
 
     public static int solution(String s) {
         int answer = 0;
@@ -61,5 +67,40 @@ public class StringSplit {
             }
         }
         return split;
+    }
+
+    public static int solution2(String s) {
+        int answer = 0;
+
+        char x = 0;
+        int cntX = 0;
+        int cntY = 0;
+
+        for(int i=0; i<s.length(); i++) {
+            if(x == 0 && cntX == 0) {
+                x = s.charAt(i);
+                cntX++;
+            }else {
+                char y = s.charAt(i);
+                if(x == y) {
+                    cntX++;
+                }else {
+                    cntY++;
+                }
+
+                if(cntX == cntY) {
+                    answer++;
+                    x = 0;
+                    cntX = 0;
+                    cntY = 0;
+                }
+            }
+
+        }
+
+        if(cntX != 0 || cntY != 0) answer++;
+
+
+        return answer;
     }
 }
