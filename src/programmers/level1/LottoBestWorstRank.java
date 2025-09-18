@@ -25,13 +25,48 @@ import java.util.Map;
  * - 로또에서 당첨번호 몇개가 있는지 확인
  * - 0이 있는 경우 최고점은 모두 맞았을 때, 최저점은 모두 틀렸을 때
  * - 0이 없는 경우는 최고/최저점은 동일
+ *
+ * [개선]
+ * - 기준을 최저점기준으로 계산을 하되 0이 있는 경우에는 당첨 숫자로 간주하여 +1을 함
+ * - 최고점은 최저점 + 0이 있는 개수로 계산됨
  */
 public class LottoBestWorstRank {
 
     public static void main(String[] args) {
         int[] lottos = {44, 1, 0, 0, 31, 25};
         int[] winNums = {31, 10, 45, 1, 6, 19};
-        System.out.println(Arrays.toString(solution(lottos, winNums)));
+        System.out.println(Arrays.toString(solution2(lottos, winNums)));
+    }
+
+    public static int[] solution2(int[] lottos, int[] winNums) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(6,1);
+        map.put(5,2);
+        map.put(4,3);
+        map.put(3,4);
+        map.put(2,5);
+        int[] answer = new int[2];
+
+        int cnt = 0;
+        int zero = 0;
+
+        for(int lotto : lottos) {
+            if(lotto == 0) {
+                zero++;
+                continue;
+            }
+            for(int winNum : winNums) {
+                if(lotto == winNum) {
+                    cnt++;
+                }
+            }
+        }
+
+        answer[0] = map.getOrDefault(cnt+zero, 6);
+        answer[1] = map.getOrDefault(cnt, 6);
+
+
+        return answer;
     }
 
     public static int[] solution(int[] lottos, int[] win_nums) {
