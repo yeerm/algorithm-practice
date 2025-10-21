@@ -69,5 +69,4 @@ public class DataAnalysis {
         return answer;
     }
 
-    }
 }
