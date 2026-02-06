@@ -24,6 +24,19 @@ public class MinMaxBuilder {
         return answer;
     }
 
+    // Stream API 사용하지 않고
+    public static String solution2(String s) {
+        String[] strArr = s.split(" ");
+        int min = Integer.parseInt(strArr[0]);
+        int max = Integer.parseInt(strArr[0]);
+        for (int i=1; i<strArr.length; i++){
+            int tmp = Integer.parseInt(strArr[i]);
+            if (tmp > max) max = tmp;
+            if (tmp < min) min = tmp;
+        }
+        return min + " " + max;
+    }
+
     public static void main(String[] args) {
         System.out.println("정답:1 4 " + solution("1 2 3 4"));
         System.out.println("정답: -4 -1 " + solution("-1 -2 -3 -4"));
